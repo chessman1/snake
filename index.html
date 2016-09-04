@@ -1,38 +1,31 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>SnakeHTML5 Game</title>
+    <title>Simple Snake Game</title>
     <style>
     canvas {
         display: block;
         position: absolute;
         border: 1px solid #000;
+        margin: auto;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
     }
     </style>
 </head>
 
 <body>
     <script>
-=======
-<html>
-
-<head>
-    <title>Snake Game</title>
-</head>
-
-<body>
-    <script type="text/javascript">
->>>>>>> dbdeeb1547b244fc155b5962a3d21040b03d8db9
     var COLS = 26,
         ROWS = 26,
         EMPTY = 0,
         SNAKE = 1,
         FRUIT = 2,
         LEFT = 0,
-<<<<<<< HEAD
         UP = 1,
         RIGHT = 2,
         DOWN = 3,
@@ -40,7 +33,6 @@
         KEY_UP = 38,
         KEY_RIGHT = 39,
         KEY_DOWN = 40,
-
         canvas,
         ctx,
         keystate,
@@ -48,17 +40,6 @@
         score;
 
     grid = {
-=======
-        RIGHT = 1,
-        UP = 2,
-        DOWN = 3,
-        canvas,
-        ctx,
-        keyState,
-        frames;
-
-    var grid = {
->>>>>>> dbdeeb1547b244fc155b5962a3d21040b03d8db9
         width: null,
         height: null,
         _grid: null,
@@ -67,18 +48,10 @@
             this.width = c;
             this.height = r;
             this._grid = [];
-<<<<<<< HEAD
             for (var x = 0; x < c; x++) {
                 this._grid.push([]);
                 for (var y = 0; y < r; y++) {
                     this._grid[x].push(d);
-=======
-
-            for (var i = 0; i < c; i++) {
-                this._grid.push([]);
-                for (var j = 0; j < r; j++) {
-                    this._grid[i].push(d);
->>>>>>> dbdeeb1547b244fc155b5962a3d21040b03d8db9
                 }
             }
         },
@@ -90,30 +63,16 @@
         get: function(x, y) {
             return this._grid[x][y];
         }
-<<<<<<< HEAD
     }
 
     snake = {
         direction: null,
         last: null,
         _queue: null,
-        init: function(d, x, y) {
-            this.direction = d;
-            this._queue = [];
-=======
-
-    };
-
-    var snake = {
-        direction: null,
-        last: null,
-        _queue: null,
 
         init: function(d, x, y) {
             this.direction = d;
             this._queue = [];
-
->>>>>>> dbdeeb1547b244fc155b5962a3d21040b03d8db9
             this.insert(x, y);
         },
 
@@ -128,59 +87,45 @@
         remove: function() {
             return this._queue.pop();
         }
-<<<<<<< HEAD
     };
-=======
-    }
->>>>>>> dbdeeb1547b244fc155b5962a3d21040b03d8db9
 
     function setFood() {
         var empty = [];
-
-<<<<<<< HEAD
         for (var x = 0; x < grid.width; x++) {
             for (var y = 0; y < grid.height; y++) {
                 if (grid.get(x, y) === EMPTY) {
                     empty.push({
                         x: x,
                         y: y
-=======
-        for (var i = 0; i < grid.width; i++) {
-            for (var j = 0; j < grid.height; j++) {
-                if (grid.get(i, j) === EMPTY) {
-                    empty.push({
-                        x: i,
-                        y: j
->>>>>>> dbdeeb1547b244fc155b5962a3d21040b03d8db9
                     });
                 }
             }
         }
 
-<<<<<<< HEAD
         var randpos = empty[Math.round(Math.random() * (empty.length - 1))];
         grid.set(FRUIT, randpos.x, randpos.y);
     }
 
     function main() {
-        // create and initiate the canvas element
+
         canvas = document.createElement("canvas");
         canvas.width = COLS * 20;
         canvas.height = ROWS * 20;
         ctx = canvas.getContext("2d");
-        // add the canvas element to the body of the document
+
         document.body.appendChild(canvas);
-        // sets an base font for bigger score display
+
         ctx.font = "12px Helvetica";
         frames = 0;
         keystate = {};
-        // keeps track of the keybourd input
+
         document.addEventListener("keydown", function(evt) {
             keystate[evt.keyCode] = true;
         });
         document.addEventListener("keyup", function(evt) {
             delete keystate[evt.keyCode];
         });
+
         init();
         loop();
     }
@@ -188,59 +133,25 @@
     function init() {
         score = 0;
         grid.init(EMPTY, COLS, ROWS);
-=======
-        var randPositions = empty[Math.floor(Math.random() * empty.length)];
-
-        grid.set(FRUIT, randPositions.x, randPositions.y);
-    }
-
-    function main() {
-        canvas = document.createElement("canvas");
-        canvas.width = COLS * 20;
-        canvas.height = ROWS * 20;
-
-        ctx = canvas.getContext("2d");
-        document.body.appendChild(canvas);
-
-        frames = 0;
-        keyState = {};
-
-        init();
-        loop();
-
-    }
-
-    function init() {
-        grid.init(EMPTY, COLS, ROWS);
-
->>>>>>> dbdeeb1547b244fc155b5962a3d21040b03d8db9
         var sp = {
             x: Math.floor(COLS / 2),
             y: ROWS - 1
         };
-<<<<<<< HEAD
         snake.init(UP, sp.x, sp.y);
         grid.set(SNAKE, sp.x, sp.y);
-=======
-
-        snake.init(UP, sp.x, sp.y);
-        grid.set(SNAKE, sp.x, sp.y);
-
->>>>>>> dbdeeb1547b244fc155b5962a3d21040b03d8db9
         setFood();
     }
 
     function loop() {
         update();
         draw();
-<<<<<<< HEAD
+
         window.requestAnimationFrame(loop, canvas);
     }
-    /**
-     * Updates the game logic
-     */
+
     function update() {
         frames++;
+
         if (keystate[KEY_LEFT] && snake.direction !== RIGHT) {
             snake.direction = LEFT;
         }
@@ -255,9 +166,9 @@
         }
 
         if (frames % 5 === 0) {
-
             var nx = snake.last.x;
             var ny = snake.last.y;
+
             switch (snake.direction) {
                 case LEFT:
                     nx--;
@@ -277,14 +188,13 @@
                 0 > ny || ny > grid.height - 1 ||
                 grid.get(nx, ny) === SNAKE
             ) {
-            	alert("New Game");
                 return init();
             }
+
             if (grid.get(nx, ny) === FRUIT) {
                 score++;
                 setFood();
             } else {
-
                 var tail = snake.remove();
                 grid.set(EMPTY, tail.x, tail.y);
             }
@@ -292,32 +202,25 @@
             grid.set(SNAKE, nx, ny);
             snake.insert(nx, ny);
         }
-=======
-
-        window.requestAnimationFrame(loop, canvas);
-    }
-
-    function update() {
-        frames++;
->>>>>>> dbdeeb1547b244fc155b5962a3d21040b03d8db9
     }
 
     function draw() {
+
         var tw = canvas.width / grid.width;
         var th = canvas.height / grid.height;
-<<<<<<< HEAD
+
         for (var x = 0; x < grid.width; x++) {
             for (var y = 0; y < grid.height; y++) {
 
                 switch (grid.get(x, y)) {
                     case EMPTY:
-                        ctx.fillStyle = "green";
+                        ctx.fillStyle = "#fff";
                         break;
                     case SNAKE:
-                        ctx.fillStyle = "blue";
+                        ctx.fillStyle = "#0ff";
                         break;
                     case FRUIT:
-                        ctx.fillStyle = "orange";
+                        ctx.fillStyle = "#f00";
                         break;
                 }
                 ctx.fillRect(x * tw, y * th, tw, th);
@@ -327,27 +230,7 @@
         ctx.fillStyle = "#000";
         ctx.fillText("SCORE: " + score, 10, canvas.height - 10);
     }
-=======
-
-        for (var i = 0; i < grid.width; i++) {
-            for (var j = 0; j < grid.height; j++) {
-                switch (grid.get(i, j)) {
-                    case EMPTY:
-                        ctx.fillStyle = "orange";
-                        break;
-                    case SNAKE:
-                        ctx.fillStyle = "green";
-                        break;
-                    case FRUIT:
-                        ctx.fillStyle = "red";
-                        break;
-                }
-                ctx.fillRect(i * tw, j * th, tw, th);
-            }
-        }
-    }
-
->>>>>>> dbdeeb1547b244fc155b5962a3d21040b03d8db9
+    // start and run the game
     main();
     </script>
 </body>
