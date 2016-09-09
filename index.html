@@ -6,22 +6,17 @@
     <title>Simple Snake Game</title>
     <style>
     canvas {
-        display: block;
+        margin-left: 270px;
         position: absolute;
         border: 1px solid #000;
-        margin: auto;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 0;
     }
     </style>
 </head>
 
 <body>
     <script>
-    var COLS = 26,
-        ROWS = 26,
+    var COLS = 30,
+        ROWS = 30,
         EMPTY = 0,
         SNAKE = 1,
         FRUIT = 2,
@@ -39,7 +34,7 @@
         frames,
         score;
 
-    grid = {
+    var grid = {
         width: null,
         height: null,
         _grid: null,
@@ -65,7 +60,7 @@
         }
     }
 
-    snake = {
+    var snake = {
         direction: null,
         last: null,
         _queue: null,
@@ -115,7 +110,6 @@
 
         document.body.appendChild(canvas);
 
-        ctx.font = "12px Helvetica";
         frames = 0;
         keystate = {};
 
@@ -133,12 +127,12 @@
     function init() {
         score = 0;
         grid.init(EMPTY, COLS, ROWS);
-        var sp = {
+        var snakeCoords = {
             x: Math.floor(COLS / 2),
             y: ROWS - 1
         };
-        snake.init(UP, sp.x, sp.y);
-        grid.set(SNAKE, sp.x, sp.y);
+        snake.init(UP, snakeCoords.x, snakeCoords.y);
+        grid.set(SNAKE, snakeCoords.x, snakeCoords.y);
         setFood();
     }
 
@@ -152,6 +146,7 @@
     function update() {
         frames++;
 
+        //if we dont make these checks for direction snake can move directly from right to left, etc.
         if (keystate[KEY_LEFT] && snake.direction !== RIGHT) {
             snake.direction = LEFT;
         }
@@ -188,7 +183,10 @@
                 0 > ny || ny > grid.height - 1 ||
                 grid.get(nx, ny) === SNAKE
             ) {
-                return init();
+                var y = confirm("New Game?");
+                if (y) {
+                    return init();
+                }
             }
 
             if (grid.get(nx, ny) === FRUIT) {
@@ -213,13 +211,13 @@
             for (var y = 0; y < grid.height; y++) {
 
                 switch (grid.get(x, y)) {
-                    case EMPTY:
-                        ctx.fillStyle = "#fff";
+                    case 0:
+                        ctx.fillStyle = "orange";
                         break;
-                    case SNAKE:
+                    case 1:
                         ctx.fillStyle = "#0ff";
                         break;
-                    case FRUIT:
+                    case 2:
                         ctx.fillStyle = "#f00";
                         break;
                 }
@@ -227,7 +225,7 @@
             }
         }
 
-        ctx.fillStyle = "#000";
+        ctx.fillStyle = "blue";
         ctx.fillText("SCORE: " + score, 10, canvas.height - 10);
     }
     // start and run the game
