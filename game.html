@@ -9,12 +9,35 @@
         position: absolute;
         border: 1px solid #000;
     }
+    
+    th,
+    td {
+        border: 1px solid orange;
+    }
+    
+    #myTable {
+        position: absolute;
+        margin-top: 10px;
+        margin-left: 900px;
+        border-collapse: collapse;
+    }
     </style>
 </head>
 
 <body>
     <p id="headX">HeadX: </p>
     <p id="headY">HeadY: </p>
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <input type="button" value="Button" onclick="myFunction()" />
     <script type="text/javascript">
     var COLS = 30,
         ROWS = 30,
@@ -22,7 +45,6 @@
         SNAKE = 1,
         FRUIT = 2,
         MINE = 4,
-        case_game = 5,
         LEFT = 0,
         UP = 1,
         RIGHT = 2,
@@ -101,13 +123,12 @@
             }
         }
 
-        var randPosFruit = empty[Math.round(Math.random() * (empty.length - 1))];
-        var randPosMine = empty[Math.round(Math.random() * (empty.length - 1))];
+        var randPosFruit = empty[Math.round(Math.random() * (empty.length))];
         grid.set(FRUIT, randPosFruit.x, randPosFruit.y);
-        randColor = Math.round(Math.random() * 4);
+        randColor = Math.round(Math.random() * 3);
     }
 
-    function setMine() {
+    function setMine() { //3-0
         var empty = [];
         for (var i = 0; i < grid.width; i++) {
             for (var j = 0; j < grid.height; j++) {
@@ -166,6 +187,18 @@
         window.requestAnimationFrame(loop, canvas);
     }
 
+    function removeMine() {
+        //change the value of mine
+        MINE = -4;
+    }
+
+    function myFunction() {
+        var table = document.getElementById("myTable");
+        var row = table.insertRow(1);
+        var cell1 = row.insertCell(0);
+        cell1.innerHTML = count;
+    }
+
     function update() {
 
         frames++;
@@ -207,6 +240,7 @@
             if (0 > headX || headX > grid.width - 1 ||
                 0 > headY || headY > grid.height - 1 ||
                 grid.get(headX, headY) === SNAKE || grid.get(headX, headY) === MINE) {
+            	//with jQuery button and menu for name and save result in the table
                 alert("Your score is: " + count);
                 return init();
             }
@@ -214,6 +248,12 @@
             if (grid.get(headX, headY) === FRUIT) {
                 count++;
                 setFood();
+                //if the player makes 15 score remove the mine
+                if (count === 15) {
+                    //inform the player that the mine is removed
+                    alert("The mine is removed from the grid!");
+                    removeMine();
+                }
             } else {
                 var tail = snake.remove();
                 grid.set(EMPTY, tail.x, tail.y);
@@ -224,12 +264,12 @@
         }
     }
 
-
-
     function getRandomColor() {
-        var colors = ["green", "blue", "lightgreen", "cyan", "pink"];
+        var colors = ["blue", "cyan", "green", "pink"];
 
-        return colors[randColor];
+        var color = colors[randColor];
+
+        return color;
     }
 
 
@@ -239,7 +279,6 @@
         for (var x = 0; x < grid.width; x++) {
             for (var y = 0; y < grid.height; y++) {
                 switch (grid.get(x, y)) {
-                    //case minichka
                     case EMPTY:
                         ctx.fillStyle = "orange";
                         break;
@@ -250,9 +289,6 @@
                         ctx.fillStyle = getRandomColor();
                         break;
                     case MINE:
-                        ctx.fillStyle = "pink";
-                        break;
-                    case 5:
                         ctx.fillStyle = "yellow";
                         break;
                 }
