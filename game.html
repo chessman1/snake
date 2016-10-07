@@ -21,7 +21,18 @@
         margin-left: 900px;
         border-collapse: collapse;
     }
+    
+    #result {
+        position: absolute;
+        border: 1px solid green;
+        height: 120px;
+        width: 170px;
+        margin-top: 50px;
+        margin-left: 20px;
+        display: none;
+    }
     </style>
+    <script src="script/jquery.js"></script>
 </head>
 
 <body>
@@ -30,14 +41,13 @@
     <table id="myTable">
         <thead>
             <tr>
+                <th>Name</th>
                 <th>Result</th>
             </tr>
         </thead>
         <tbody>
         </tbody>
     </table>
-
-    <input type="button" value="Button" onclick="myFunction()" />
     <script type="text/javascript">
     var COLS = 30,
         ROWS = 30,
@@ -128,7 +138,7 @@
         randColor = Math.round(Math.random() * 3);
     }
 
-    function setMine() { //3-0
+    function setMine() {
         var empty = [];
         for (var i = 0; i < grid.width; i++) {
             for (var j = 0; j < grid.height; j++) {
@@ -174,6 +184,7 @@
             x: Math.floor(COLS / 2),
             y: ROWS - 1
         };
+
         snake.init(UP, snakeCoords.x, snakeCoords.y);
         grid.set(SNAKE, snakeCoords.x, snakeCoords.y);
 
@@ -190,13 +201,6 @@
     function removeMine() {
         //change the value of mine
         MINE = -4;
-    }
-
-    function myFunction() {
-        var table = document.getElementById("myTable");
-        var row = table.insertRow(1);
-        var cell1 = row.insertCell(0);
-        cell1.innerHTML = count;
     }
 
     function update() {
@@ -240,15 +244,20 @@
             if (0 > headX || headX > grid.width - 1 ||
                 0 > headY || headY > grid.height - 1 ||
                 grid.get(headX, headY) === SNAKE || grid.get(headX, headY) === MINE) {
-            	//with jQuery button and menu for name and save result in the table
-                alert("Your score is: " + count);
-                return init();
+                var table = document.getElementById("myTable");
+                var row = table.insertRow(1);
+                var cell1 = row.insertCell(0);
+                cell1.innerHTML = count;
+                var y = confirm("New Game?");
+                if (y) {
+                    return init();
+                }
             }
 
             if (grid.get(headX, headY) === FRUIT) {
                 count++;
                 setFood();
-                //if the player makes 15 score remove the mine
+                //if the player makes 15 score, remove the mine
                 if (count === 15) {
                     //inform the player that the mine is removed
                     alert("The mine is removed from the grid!");
@@ -298,8 +307,6 @@
 
         ctx.fillStyle = "#000";
         ctx.fillText("SCORE: " + count, 7, canvas.height - 10);
-
-        //s Angular tablica koqto subira score i gi sortira
 
         //BDD testing for setFood()
     }
