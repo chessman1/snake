@@ -32,22 +32,29 @@
         display: none;
     }
     </style>
-    <script src="script/jquery.js"></script>
+	<script
+	  src="https://code.jquery.com/jquery-3.2.0.min.js"
+	  integrity="sha256-JAW99MJVpJBGcbzEuXk4Az05s/XyDdBomFqNlM3ic+I="
+	  crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <p id="headX">HeadX: </p>
-    <p id="headY">HeadY: </p>
-    <table id="myTable">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Result</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+	<div id="gamezone" style="width:100%; float:left;"></div>
+	<div style="width:100%; float:left;">
+	    <p id="headX">HeadX: </p>
+	    <p id="headY">HeadY: </p>
+	    <table id="myTable">
+	        <thead>
+	            <tr>
+	                <th>Name</th>
+	                <th>Result</th>
+	        </thead>
+	        <tbody>
+	        </tbody>
+	    </table>
+	</div>
+
+    <p id="info"></p>
     <script type="text/javascript">
     var COLS = 30,
         ROWS = 30,
@@ -157,12 +164,15 @@
 
     function main() {
         canvas = document.createElement("canvas");
+        canvas.id = "gameCanvas";
         canvas.width = COLS * 15;
         canvas.height = ROWS * 15;
 
         ctx = canvas.getContext("2d");
 
-        document.body.appendChild(canvas);
+        //document.body.appendChild(canvas);
+        $("#gamezone").append(canvas);
+        $("#gameCanvas").css("position", 'relative');
 
         document.addEventListener("keydown", function(evt) {
             keyState[evt.keyCode] = true;
@@ -257,10 +267,11 @@
             if (grid.get(headX, headY) === FRUIT) {
                 count++;
                 setFood();
+                setMine();
                 //if the player makes 15 score, remove the mine
                 if (count === 15) {
                     //inform the player that the mine is removed
-                    alert("The mine is removed from the grid!");
+                    $("#info").text("The mine is removed from the grid!");
                     removeMine();
                 }
             } else {
